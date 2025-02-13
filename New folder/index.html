@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envelope Surprise</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background-color: #fef3f3;
+        }
+        .container {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .envelope {
+            width: 250px;
+            height: 150px;
+            background: #ff6f61;
+            position: relative;
+            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .envelope::before, .envelope::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+        .envelope::before {
+            border-width: 0 125px 75px 125px;
+            border-color: transparent transparent #ff8a80 transparent;
+        }
+        .envelope::after {
+            top: auto;
+            bottom: 0;
+            border-width: 75px 125px 0 125px;
+            border-color: #ff8a80 transparent transparent transparent;
+        }
+        .click-here-btn {
+            margin-top: 15px;
+            background-color: #ff6f61;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        #imageContainer {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        #imageContainer img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+        .falling-item {
+            position: absolute;
+            top: -50px;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="envelope" onclick="openEnvelope()"></div>
+        <button class="click-here-btn" onclick="openEnvelope()">Click Here</button>
+    </div>
+
+    <div id="imageContainer" onclick="closeImage()">
+        <img src="ay.jpg" alt="Surprise Image">
+    </div>
+
+    <script>
+        function openEnvelope() {
+            document.getElementById('imageContainer').style.display = 'flex';
+            startFallingEffects();
+        }
+
+        function closeImage() {
+            document.getElementById('imageContainer').style.display = 'none';
+        }
+
+        function startFallingEffects() {
+            setInterval(() => {
+                createFallingItem('🎈');
+                createFallingItem('🌸');
+            }, 500);
+        }
+
+        function createFallingItem(icon) {
+            const item = document.createElement('div');
+            item.classList.add('falling-item');
+            item.innerText = icon;
+            item.style.left = Math.random() * window.innerWidth + 'px';
+            document.body.appendChild(item);
+
+            let position = -50;
+            const interval = setInterval(() => {
+                position += 3;
+                item.style.top = position + 'px';
+                if (position > window.innerHeight) {
+                    clearInterval(interval);
+                    item.remove();
+                }
+            }, 30);
+        }
+    </script>
+</body>
+</html>
